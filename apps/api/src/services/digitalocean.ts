@@ -307,7 +307,8 @@ const digitalocean: CloudProvider = {
         name: string,
         size: number,
         location: string,
-        serverId?: number
+        serverId?: number,
+        _attachInstanceRef?: string
     ): Promise<VolumeInfo> {
         const body: Record<string, unknown> = {
             name,
@@ -342,13 +343,13 @@ const digitalocean: CloudProvider = {
         })
     },
 
-    async detachVolume(volumeId: number): Promise<void> {
+    async detachVolume(volumeId: number, _resourceRef?: string): Promise<void> {
         await getClient().post(`/volumes/${volumeId}/actions`, {
             type: 'detach'
         })
     },
 
-    async deleteVolume(volumeId: number): Promise<void> {
+    async deleteVolume(volumeId: number, _resourceRef?: string): Promise<void> {
         await getClient().delete(`/volumes/${volumeId}`)
     },
 

@@ -1,0 +1,12 @@
+NODE_ENV: production
+DATABASE_DRIVER: pg
+CORS_ALLOW_CLOUD_RUN: '1'
+CLIENT: https://YOUR-WEB-SERVICE-xxxxx-uc.a.run.app
+GCP_PROJECT_ID: fh-claw
+FIREBASE_PROJECT_ID: your-firebase-project
+FIREBASE_CLIENT_EMAIL: firebase-adminsdk@your-project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY: |-
+  -----BEGIN PRIVATE KEY-----
+  ...
+  -----END PRIVATE KEY-----
+DATABASE_URL: postgresql://postgres:PASSWORD@/clawhost?host=/cloudsql/fh-claw:us-central1:clawhost-db

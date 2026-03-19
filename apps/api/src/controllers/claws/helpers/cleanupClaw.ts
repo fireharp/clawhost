@@ -19,10 +19,19 @@ async function cleanupClaw(
 
     await Promise.allSettled([
         ...clawVolumes
-            .filter((vol) => vol.providerVolumeId)
+            .filter(
+                (vol) =>
+                    vol.providerVolumeId != null || vol.providerVolumeRef
+            )
             .map(async (vol) => {
-                await provider.detachVolume(vol.providerVolumeId!)
-                await provider.deleteVolume(vol.providerVolumeId!)
+                await provider.detachVolume(
+                    vol.providerVolumeId ?? 0,
+                    vol.providerVolumeRef ?? undefined
+                )
+                await provider.deleteVolume(
+                    vol.providerVolumeId ?? 0,
+                    vol.providerVolumeRef ?? undefined
+                )
             }),
         claw.subdomain
             ? cloudflare

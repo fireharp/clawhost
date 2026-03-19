@@ -19,7 +19,16 @@ const locationNames: Record<string, string> = {
     tor1: 'Toronto, Canada',
     blr1: 'Bangalore, India',
     syd1: 'Sydney, Australia',
-    atl1: 'Atlanta, USA'
+    atl1: 'Atlanta, USA',
+    'us-central1': 'Iowa, USA',
+    'us-east1': 'South Carolina, USA',
+    'us-west1': 'Oregon, USA',
+    'europe-west1': 'Belgium',
+    'europe-west4': 'Netherlands',
+    'asia-southeast1': 'Singapore',
+    'asia-northeast1': 'Tokyo, Japan',
+    'australia-southeast1': 'Sydney, Australia',
+    'southamerica-east1': 'São Paulo, Brazil'
 }
 
 export default locationNames

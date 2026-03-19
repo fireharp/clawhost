@@ -1,7 +1,7 @@
 import type { AuthenticatedContext, ProviderType } from '@/ts/Types'
 
 import { eq } from 'drizzle-orm'
-import { clawStatus } from '@openclaw/shared'
+import { clawProvider, clawStatus } from '@openclaw/shared'
 import { db } from '@/db'
 import { claws, sshKeys, volumes } from '@/db/schema'
 import { getProvider } from '@/services/provider'
@@ -73,10 +73,19 @@ const reinstallClaw = async (c: AuthenticatedContext) => {
 
         await Promise.allSettled([
             ...clawVolumes
-                .filter((vol) => vol.providerVolumeId)
+                .filter(
+                    (vol) =>
+                        vol.providerVolumeId != null || vol.providerVolumeRef
+                )
                 .map(async (vol) => {
-                    await provider.detachVolume(vol.providerVolumeId!)
-                    await provider.deleteVolume(vol.providerVolumeId!)
+                    await provider.detachVolume(
+                        vol.providerVolumeId ?? 0,
+                        vol.providerVolumeRef ?? undefined
+                    )
+                    await provider.deleteVolume(
+                        vol.providerVolumeId ?? 0,
+                        vol.providerVolumeRef ?? undefined
+                    )
                 }),
             existing.subdomain
                 ? cloudflare
@@ -96,11 +105,13 @@ const reinstallClaw = async (c: AuthenticatedContext) => {
         let providerSshKeyIds: number[] | undefined
         if (sshKeyResult?.[0]) {
             const keyId =
-                providerName === 'digitalocean'
+                providerName === clawProvider.digitalocean
                     ? sshKeyResult[0].digitaloceanKeyId
-                    : providerName === 'vultr'
+                    : providerName === clawProvider.vultr
                       ? sshKeyResult[0].vultrKeyId
-                      : sshKeyResult[0].providerKeyId
+                      : providerName === clawProvider.gcp
+                        ? sshKeyResult[0].gcpKeyId
+                        : sshKeyResult[0].providerKeyId
             if (keyId) {
                 providerSshKeyIds = [keyId]
             }
@@ -113,7 +124,7 @@ const reinstallClaw = async (c: AuthenticatedContext) => {
             newGatewayToken
         )
 
-        const { serverId, ip } = await provider.createServer(
+        const serverResult = await provider.createServer(
             generateServerName(existing.name, id),
             existing.planId,
             existing.location!,
@@ -122,6 +133,7 @@ const reinstallClaw = async (c: AuthenticatedContext) => {
             '',
             cloudInitScript
         )
+        const { serverId, ip, providerServerId: serverRef } = serverResult
 
         await Promise.all([
             cloudflare
@@ -132,7 +144,7 @@ const reinstallClaw = async (c: AuthenticatedContext) => {
             db
                 .update(claws)
                 .set({
-                    providerServerId: serverId.toString(),
+                    providerServerId: serverRef ?? serverId.toString(),
                     status: clawStatus.configuring,
                     ip,
                     rootPassword: newPassword,
@@ -148,12 +160,16 @@ const reinstallClaw = async (c: AuthenticatedContext) => {
                     vol.name,
                     vol.size,
                     vol.location,
-                    serverId
+                    serverId,
+                    serverRef
                 )
                 await db
                     .update(volumes)
                     .set({
-                        providerVolumeId: providerVolume.id,
+                        providerVolumeId: providerVolume.ref
+                            ? null
+                            : providerVolume.id,
+                        providerVolumeRef: providerVolume.ref ?? null,
                         status: 'available'
                     })
                     .where(eq(volumes.id, vol.id))

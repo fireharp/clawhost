@@ -5,7 +5,6 @@ dist
 *.tsbuildinfo
 .git
 .env
-apps/web
 apps/auth
 apps/mobile
 apps/clawhostgo

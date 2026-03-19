@@ -111,6 +111,11 @@ const Landing: FC = (): ReactNode => {
         isLoading: vultrLoading,
         atCapacity: vultrAtCapacity
     } = usePlans(clawProvider.vultr)
+    const {
+        plans: gcpPlans,
+        isLoading: gcpLoading,
+        atCapacity: gcpAtCapacity
+    } = usePlans(clawProvider.gcp)
 
     const isProviderUnavailable = (p: ProviderType): boolean => {
         if (p === clawProvider.hetzner)
@@ -119,6 +124,8 @@ const Landing: FC = (): ReactNode => {
             return !digitaloceanLoading && !digitaloceanPlans?.length
         if (p === clawProvider.vultr)
             return !vultrLoading && !vultrPlans?.length
+        if (p === clawProvider.gcp)
+            return !gcpLoading && !gcpPlans?.length
         return false
     }
 
@@ -127,10 +134,14 @@ const Landing: FC = (): ReactNode => {
         ((!hetznerLoading && (!hetznerPlans?.length || hetznerAtCapacity)) ||
             (!digitaloceanLoading &&
                 (!digitaloceanPlans?.length || digitaloceanAtCapacity)) ||
-            (!vultrLoading && (!vultrPlans?.length || vultrAtCapacity)))
+            (!vultrLoading && (!vultrPlans?.length || vultrAtCapacity)) ||
+            (!gcpLoading && (!gcpPlans?.length || gcpAtCapacity)))
 
     const allDoneLoading =
-        !hetznerLoading && !digitaloceanLoading && !vultrLoading
+        !hetznerLoading &&
+        !digitaloceanLoading &&
+        !vultrLoading &&
+        !gcpLoading
 
     const autoProvider: ProviderType = hetznerPlans?.length
         ? clawProvider.hetzner
@@ -138,7 +149,9 @@ const Landing: FC = (): ReactNode => {
           ? clawProvider.digitalocean
           : vultrPlans?.length
             ? clawProvider.vultr
-            : clawProvider.hetzner
+            : gcpPlans?.length
+              ? clawProvider.gcp
+              : clawProvider.hetzner
 
     const [userSelectedProvider, setUserSelectedProvider] =
         useState<ProviderType | null>(null)
@@ -151,12 +164,14 @@ const Landing: FC = (): ReactNode => {
     const providerPlansMap: Record<string, typeof hetznerPlans> = {
         [clawProvider.hetzner]: hetznerPlans,
         [clawProvider.digitalocean]: digitaloceanPlans,
-        [clawProvider.vultr]: vultrPlans
+        [clawProvider.vultr]: vultrPlans,
+        [clawProvider.gcp]: gcpPlans
     }
     const providerLoadingMap: Record<string, boolean> = {
         [clawProvider.hetzner]: hetznerLoading,
         [clawProvider.digitalocean]: digitaloceanLoading,
-        [clawProvider.vultr]: vultrLoading
+        [clawProvider.vultr]: vultrLoading,
+        [clawProvider.gcp]: gcpLoading
     }
     const plans = providerPlansMap[pricingProvider]
     const plansLoading = providerLoadingMap[pricingProvider]

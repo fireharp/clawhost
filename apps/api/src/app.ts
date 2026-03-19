@@ -9,6 +9,7 @@ import { verifyToken } from '@/services/firebase'
 import { eq, sql } from 'drizzle-orm'
 import { db } from '@/db'
 import { users } from '@/db/schema'
+import getCorsOrigins from '@/lib/cors/getCorsOrigins'
 import { ok, fail } from '@/lib/response'
 import { t } from '@openclaw/i18n'
 import {
@@ -26,19 +27,10 @@ import { browseSkills } from '@/services/clawhub'
 
 const app = new Hono<HonoEnv>()
 
-const isDev = process.env.NODE_ENV !== 'production'
-
 app.use(
     '*',
     cors({
-        origin: isDev
-            ? [
-                  'https://clawhost.cloud',
-                  'https://www.clawhost.cloud',
-                  'http://localhost:1111',
-                  'http://localhost:3333'
-              ]
-            : ['https://clawhost.cloud', 'https://www.clawhost.cloud'],
+        origin: getCorsOrigins(),
         allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowHeaders: ['Content-Type', 'Authorization'],
         exposeHeaders: ['X-Sample-Rate', 'X-Channels', 'X-Audio-Format'],

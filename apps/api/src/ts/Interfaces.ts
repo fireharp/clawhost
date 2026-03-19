@@ -46,11 +46,12 @@ export interface CloudProvider {
         name: string,
         size: number,
         location: string,
-        serverId?: number
+        serverId?: number,
+        attachInstanceRef?: string
     ): Promise<VolumeInfo>
     attachVolume(volumeId: number, serverId: number): Promise<void>
-    detachVolume(volumeId: number): Promise<void>
-    deleteVolume(volumeId: number): Promise<void>
+    detachVolume(volumeId: number, resourceRef?: string): Promise<void>
+    deleteVolume(volumeId: number, resourceRef?: string): Promise<void>
     getVolume(volumeId: number): Promise<VolumeDetails>
 }
 
@@ -171,6 +172,16 @@ export interface HetznerPricingResponse {
 
 export interface HetznerVolumeResponse {
     volume: HetznerVolume
+}
+
+export interface GcpInstanceRef {
+    zone: string
+    instanceName: string
+}
+
+export interface GcpVolumeRef {
+    zone: string
+    diskName: string
 }
 
 export interface DigitalOceanDroplet {
@@ -337,6 +348,7 @@ export interface CreateServerResult {
     serverId: number
     ip: string
     rootPassword: string
+    providerServerId?: string
 }
 
 export interface ServerTypeInfo {
@@ -376,6 +388,7 @@ export interface VolumeInfo {
     id: number
     size: number
     location: string
+    ref?: string
 }
 
 export interface VolumeDetails {
@@ -620,7 +633,7 @@ export interface UpdateProfileBody {
 }
 
 export interface CreateClawBody {
-    name: string
+    name?: string
     provider: ProviderType
     planId: string
     location: string

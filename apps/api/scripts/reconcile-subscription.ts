@@ -18,7 +18,11 @@ import {
     DOMAIN
 } from '@/controllers/claws/helpers'
 
-const VALID_PROVIDERS: ProviderType[] = ['hetzner', 'digitalocean', 'vultr']
+const VALID_PROVIDERS: ProviderType[] = [
+    'hetzner',
+    'digitalocean',
+    'vultr'
+]
 
 const run = async () => {
     const subscriptionId = process.argv[2]

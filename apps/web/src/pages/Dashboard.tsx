@@ -403,10 +403,12 @@ const Dashboard: FC = (): ReactNode => {
     const { plans: hetznerPlans } = usePlans('hetzner')
     const { plans: digitaloceanPlans } = usePlans('digitalocean')
     const { plans: vultrPlans } = usePlans('vultr')
+    const { plans: gcpPlans } = usePlans('gcp')
     const plans = [
         ...(hetznerPlans || []),
         ...(digitaloceanPlans || []),
-        ...(vultrPlans || [])
+        ...(vultrPlans || []),
+        ...(gcpPlans || [])
     ]
     const { data: locations } = useLocations()
     const { data: sshKeys } = useSSHKeys()

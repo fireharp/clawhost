@@ -10,7 +10,8 @@ import { useUIStore } from '@/lib/store'
 const providerLabels: Record<string, string> = {
     [clawProvider.hetzner]: t('createClaw.providerHetzner'),
     [clawProvider.digitalocean]: t('createClaw.providerDigitalOcean'),
-    [clawProvider.vultr]: t('createClaw.providerVultr')
+    [clawProvider.vultr]: t('createClaw.providerVultr'),
+    [clawProvider.gcp]: t('createClaw.providerGcp')
 }
 
 const AnnouncementBanner: FC = (): ReactNode => {
@@ -29,10 +30,19 @@ const AnnouncementBanner: FC = (): ReactNode => {
         isLoading: vultrLoading,
         atCapacity: vultrAtCapacity
     } = usePlans(clawProvider.vultr)
+    const {
+        plans: gcpPlans,
+        isLoading: gcpLoading,
+        atCapacity: gcpAtCapacity
+    } = usePlans(clawProvider.gcp)
 
     const lockedProviders = useRef(new Set<string>())
 
-    const allLoading = hetznerLoading && digitaloceanLoading && vultrLoading
+    const allLoading =
+        hetznerLoading &&
+        digitaloceanLoading &&
+        vultrLoading &&
+        gcpLoading
 
     if (!allLoading) {
         if (!hetznerLoading && (!hetznerPlans?.length || hetznerAtCapacity))
@@ -44,6 +54,8 @@ const AnnouncementBanner: FC = (): ReactNode => {
             lockedProviders.current.add(clawProvider.digitalocean)
         if (!vultrLoading && (!vultrPlans?.length || vultrAtCapacity))
             lockedProviders.current.add(clawProvider.vultr)
+        if (!gcpLoading && (!gcpPlans?.length || gcpAtCapacity))
+            lockedProviders.current.add(clawProvider.gcp)
     }
 
     const { phBannerVisible } = useUIStore()

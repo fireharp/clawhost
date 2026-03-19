@@ -14,6 +14,7 @@ import { useUIStore } from '@/lib/store'
 import { copyToClipboard, ROUTES } from '@/lib'
 import {
     usePurchaseClaw,
+    useCreateClaw,
     usePlans,
     useLocations,
     useVolumePricing,
@@ -70,6 +71,9 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
     const { plans: vultrPlans, isLoading: vultrLoading } = usePlans(
         clawProvider.vultr
     )
+    const { plans: gcpPlans, isLoading: gcpLoading } = usePlans(
+        clawProvider.gcp
+    )
 
     const hetznerAvailable = !hetznerLoading && !!hetznerPlans?.length
 
@@ -83,6 +87,8 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
             )
         if (p === clawProvider.vultr)
             return hetznerAvailable || (!vultrLoading && !vultrPlans?.length)
+        if (p === clawProvider.gcp)
+            return hetznerAvailable || (!gcpLoading && !gcpPlans?.length)
         return false
     }
 
@@ -95,7 +101,9 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
                 ? clawProvider.digitalocean
                 : vultrPlans?.length
                   ? clawProvider.vultr
-                  : clawProvider.hetzner
+                  : gcpPlans?.length
+                    ? clawProvider.gcp
+                    : clawProvider.hetzner
 
     const [userSelectedProvider, setUserSelectedProvider] =
         useState<ProviderType | null>(null)
@@ -213,6 +221,7 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
     }, [planAvailability, planId])
 
     const purchaseMutation = usePurchaseClaw()
+    const createMutation = useCreateClaw()
 
     const handleCreate = () => {
         if (name && !/^[a-zA-Z0-9-]+$/.test(name)) {
@@ -227,6 +236,33 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
         const selectedPlanData = plans.find((p) => p.id === planId)
         if (!selectedPlanData) {
             showToast(t('errors.invalidPlan'), 'error')
+            return
+        }
+
+        if (provider === clawProvider.gcp) {
+            createMutation.mutate(
+                {
+                    ...(name.trim() ? { name: name.trim() } : {}),
+                    provider,
+                    planId,
+                    location,
+                    password: password || undefined,
+                    sshKeyId: selectedSshKeyId || undefined,
+                    volumeSize: volumeSize > 0 ? volumeSize : undefined
+                },
+                {
+                    onSuccess: () => {
+                        showToast(t('createClaw.clawCreated'), 'success')
+                        onClose()
+                    },
+                    onError: (err: Error) => {
+                        showToast(
+                            err.message || t('errors.failedToCreateClaw'),
+                            'error'
+                        )
+                    }
+                }
+            )
             return
         }
 
@@ -393,6 +429,30 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
                                                     <path
                                                         d='M259.9 357.4c-2.5-3.9-3.9-8.6-3.9-13.6 0-14.1 11.5-25.6 25.6-25.6h131.1c9.1 0 17.1 4.8 21.7 12l181.9 288.5c2.5 4 3.9 8.6 3.9 13.6s-1.5 9.7-3.9 13.6l-65.6 104c-4.5 7.2-12.5 12-21.7 12-9.1 0-17.1-4.8-21.7-12L259.9 357.4zm395.3 158.1c4.5 7.2 12.5 11.9 21.7 11.9 9.1 0 17.1-4.8 21.7-11.9l22.6-35.8 43-68.2c2.5-3.9 3.9-8.6 3.9-13.7 0-5-1.5-9.7-3.9-13.7L730.1 330c-4.5-7.2-12.5-12-21.7-12H577.1c-14.1 0-25.6 11.5-25.6 25.6 0 5 1.4 9.7 3.9 13.6l99.8 158.3z'
                                                         fill='white'
+                                                    />
+                                                </svg>
+                                            )
+                                        },
+                                        {
+                                            key: clawProvider.gcp,
+                                            label: t('createClaw.providerGcp'),
+                                            icon: (
+                                                <svg
+                                                    className='h-4 w-4'
+                                                    viewBox='0 0 24 24'
+                                                    fill='none'
+                                                >
+                                                    <path
+                                                        d='M12 2l10 5.5v11L12 24 2 18.5v-11L12 2z'
+                                                        fill='#4285F4'
+                                                    />
+                                                    <path
+                                                        d='M12 6.5L6.2 9.8v4.4L12 17.5l5.8-3.3V9.8L12 6.5z'
+                                                        fill='#EA4335'
+                                                    />
+                                                    <path
+                                                        d='M12 10.2l-2.9 1.7v2.2L12 15.8l2.9-1.7v-2.2L12 10.2z'
+                                                        fill='#FBBC04'
                                                     />
                                                 </svg>
                                             )
@@ -662,6 +722,11 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
                                                 ),
                                                 'vhf-3c-8gb': t(
                                                     'landing.tierHighFrequency'
+                                                )
+                                            },
+                                            gcp: {
+                                                'e2-small': t(
+                                                    'createClaw.tierGcpCompute'
                                                 )
                                             }
                                         }
@@ -1226,32 +1291,38 @@ const CreateClawModal: FC<CreateClawModalProps> = ({
                         <Button
                             type='submit'
                             disabled={
-                                purchaseMutation.isPending ||
+                                (provider === clawProvider.gcp
+                                    ? createMutation.isPending
+                                    : purchaseMutation.isPending) ||
                                 !selectedPlan ||
                                 !location ||
                                 !!nameError ||
                                 !agreedToTerms
                             }
                         >
-                            {purchaseMutation.isPending && (
+                            {(provider === clawProvider.gcp
+                                ? createMutation.isPending
+                                : purchaseMutation.isPending) && (
                                 <CircleNotchIcon className='h-4 w-4 animate-spin' />
                             )}
                             {!selectedPlan
                                 ? t('createClaw.selectServerToContinue')
                                 : !location
                                   ? t('createClaw.selectLocationToContinue')
-                                  : t('createClaw.proceedToPayment', {
-                                        amount: (billingCycle === billingInterval.YEAR
-                                            ? selectedPlan.priceYearly +
-                                              (volumeSize > 0 && volumePricing
-                                                  ? volumeSize * volumePricing.pricePerGbMonthly * 10
-                                                  : 0)
-                                            : selectedPlan.priceMonthly +
-                                              (volumeSize > 0 && volumePricing
-                                                  ? volumeSize * volumePricing.pricePerGbMonthly
-                                                  : 0)
-                                        ).toFixed(2)
-                                    })}
+                                  : provider === clawProvider.gcp
+                                    ? t('createClaw.deployWithoutCheckout')
+                                    : t('createClaw.proceedToPayment', {
+                                          amount: (billingCycle === billingInterval.YEAR
+                                              ? selectedPlan.priceYearly +
+                                                (volumeSize > 0 && volumePricing
+                                                    ? volumeSize * volumePricing.pricePerGbMonthly * 10
+                                                    : 0)
+                                              : selectedPlan.priceMonthly +
+                                                (volumeSize > 0 && volumePricing
+                                                    ? volumeSize * volumePricing.pricePerGbMonthly
+                                                    : 0)
+                                          ).toFixed(2)
+                                      })}
                         </Button>
                     </div>
                 </form>

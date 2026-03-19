@@ -54,6 +54,29 @@ const ProviderIcon: FC<ProviderIconProps> = ({
         )
     }
 
+    if (provider === clawProvider.gcp) {
+        return (
+            <svg
+                className={className || 'h-4 w-4'}
+                viewBox='0 0 24 24'
+                fill='none'
+            >
+                <path
+                    d='M12 2l10 5.5v11L12 24 2 18.5v-11L12 2z'
+                    fill='#4285F4'
+                />
+                <path
+                    d='M12 6.5L6.2 9.8v4.4L12 17.5l5.8-3.3V9.8L12 6.5z'
+                    fill='#EA4335'
+                />
+                <path
+                    d='M12 10.2l-2.9 1.7v2.2L12 15.8l2.9-1.7v-2.2L12 10.2z'
+                    fill='#FBBC04'
+                />
+            </svg>
+        )
+    }
+
     if (provider === clawProvider.local) {
         return (
             <svg

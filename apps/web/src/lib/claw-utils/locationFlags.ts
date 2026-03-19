@@ -51,7 +51,16 @@ const locationFlags: Record<string, string> = {
     syd: '\u{1F1E6}\u{1F1FA}',
     tlv: '\u{1F1EE}\u{1F1F1}',
     waw: '\u{1F1F5}\u{1F1F1}',
-    yto: '\u{1F1E8}\u{1F1E6}'
+    yto: '\u{1F1E8}\u{1F1E6}',
+    'us-central1': '\u{1F1FA}\u{1F1F8}',
+    'us-east1': '\u{1F1FA}\u{1F1F8}',
+    'us-west1': '\u{1F1FA}\u{1F1F8}',
+    'europe-west1': '\u{1F1EA}\u{1F1FA}',
+    'europe-west4': '\u{1F1F3}\u{1F1F1}',
+    'asia-southeast1': '\u{1F1F8}\u{1F1EC}',
+    'asia-northeast1': '\u{1F1EF}\u{1F1F5}',
+    'australia-southeast1': '\u{1F1E6}\u{1F1FA}',
+    'southamerica-east1': '\u{1F1E7}\u{1F1F7}'
 }
 
 export default locationFlags

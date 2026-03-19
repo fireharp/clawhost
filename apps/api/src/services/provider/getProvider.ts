@@ -1,8 +1,9 @@
 import type { CloudProvider } from '@/ts/Interfaces'
 import type { ProviderType } from '@/ts/Types'
 
-import hetzner from '@/services/hetzner'
 import digitalocean from '@/services/digitalocean'
+import gcp from '@/services/gcp'
+import hetzner from '@/services/hetzner'
 import vultr from '@/services/vultr'
 import cache from '@/services/provider/cache'
 
@@ -41,7 +42,8 @@ const cached = <T>(
 const providers: Record<ProviderType, CloudProvider> = {
     hetzner,
     digitalocean,
-    vultr
+    vultr,
+    gcp
 }
 
 const wrappedProviders = new Map<ProviderType, CloudProvider>()

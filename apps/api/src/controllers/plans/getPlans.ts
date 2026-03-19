@@ -6,6 +6,7 @@ import { getProvider } from '@/services/provider'
 import { inputValidation } from '@openclaw/shared'
 import { ok, fail } from '@/lib/response'
 import { t } from '@openclaw/i18n'
+import planFallbackPrices from '@/lib/planFallbackPrices'
 import { getPlanPrices } from '@/lib/polar'
 
 const hetznerPlanOrder = [
@@ -65,6 +66,15 @@ const vultrPlanOrder = [
     'vhf-12c-48gb'
 ]
 
+const gcpPlanOrder = [
+    'e2-small',
+    'e2-medium',
+    'e2-standard-2',
+    'e2-standard-4',
+    'e2-standard-8',
+    'e2-standard-16'
+]
+
 const providerLimits: Partial<Record<ProviderType, number>> = {
     hetzner: 100
 }
@@ -72,7 +82,8 @@ const providerLimits: Partial<Record<ProviderType, number>> = {
 const planOrders: Record<ProviderType, PlanOrder> = {
     hetzner: { order: hetznerPlanOrder },
     digitalocean: { order: digitaloceanPlanOrder },
-    vultr: { order: vultrPlanOrder }
+    vultr: { order: vultrPlanOrder },
+    gcp: { order: gcpPlanOrder }
 }
 
 const getPlans = async (c: Context) => {
@@ -97,7 +108,10 @@ const getPlans = async (c: Context) => {
         ])
 
         const atCapacity = servers && limit ? servers.size >= limit : false
-        const prices = priceMap[providerName] ?? {}
+        const polarPrices = priceMap[providerName] ?? {}
+        const fallbackPrices = planFallbackPrices[providerName] ?? {}
+        const prices =
+            providerName === 'gcp' ? fallbackPrices : polarPrices
 
         const ANNUAL_DISCOUNT_MONTHS = 10
 

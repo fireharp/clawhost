@@ -108,6 +108,7 @@ export const sshKeys = pgTable(
         providerKeyId: integer('provider_key_id'),
         digitaloceanKeyId: integer('digitalocean_key_id'),
         vultrKeyId: integer('vultr_key_id'),
+        gcpKeyId: integer('gcp_key_id'),
         createdAt: timestamp('created_at', { withTimezone: true })
             .defaultNow()
             .notNull()
@@ -202,6 +203,7 @@ export const volumes = pgTable(
         name: text('name').notNull(),
         size: integer('size').notNull(),
         providerVolumeId: integer('provider_volume_id'),
+        providerVolumeRef: text('provider_volume_ref'),
         location: text('location').notNull(),
         status: text('status').notNull().default('creating'),
         createdAt: timestamp('created_at', { withTimezone: true })

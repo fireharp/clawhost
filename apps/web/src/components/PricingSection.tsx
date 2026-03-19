@@ -64,6 +64,10 @@ const PricingSection: FC<PricingSectionProps> = ({
                                         {
                                             key: clawProvider.vultr,
                                             label: t('createClaw.providerVultr')
+                                        },
+                                        {
+                                            key: clawProvider.gcp,
+                                            label: t('createClaw.providerGcp')
                                         }
                                     ] as ProviderOption[]
                                 ).map((p) => {

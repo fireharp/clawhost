@@ -6,7 +6,7 @@ import type { ProviderType } from '@/ts/Types'
 
 import crypto from 'crypto'
 import { eq } from 'drizzle-orm'
-import { clawStatus, inputValidation } from '@openclaw/shared'
+import { clawProvider, clawStatus, inputValidation } from '@openclaw/shared'
 import { db } from '@/db'
 import { claws, pendingClaws, sshKeys, volumes } from '@/db/schema'
 import { getProvider } from '@/services/provider'
@@ -77,11 +77,13 @@ const provisionClaw = async (
         let providerSshKeyIds: number[] | undefined
         if (sshKeyResult && sshKeyResult[0]) {
             const keyId =
-                providerName === 'digitalocean'
+                providerName === clawProvider.digitalocean
                     ? sshKeyResult[0].digitaloceanKeyId
-                    : providerName === 'vultr'
+                    : providerName === clawProvider.vultr
                       ? sshKeyResult[0].vultrKeyId
-                      : sshKeyResult[0].providerKeyId
+                      : providerName === clawProvider.gcp
+                        ? sshKeyResult[0].gcpKeyId
+                        : sshKeyResult[0].providerKeyId
             if (keyId) {
                 providerSshKeyIds = [keyId]
             }
@@ -113,8 +115,9 @@ const provisionClaw = async (
             billingInterval: pending.billingInterval
         })
 
-        let serverId: number
-        let ip: string
+        let serverId = 0
+        let ip = ''
+        let serverRef: string | undefined
 
         try {
             const serverName = generateServerName(pending.name, id)
@@ -129,6 +132,7 @@ const provisionClaw = async (
             )
             serverId = server.serverId
             ip = server.ip
+            serverRef = server.providerServerId
         } catch (providerErr) {
             await db.delete(claws).where(eq(claws.id, id))
             throw providerErr
@@ -143,7 +147,7 @@ const provisionClaw = async (
             db
                 .update(claws)
                 .set({
-                    providerServerId: serverId.toString(),
+                    providerServerId: serverRef ?? serverId.toString(),
                     status: clawStatus.configuring,
                     ip
                 })
@@ -160,7 +164,8 @@ const provisionClaw = async (
                     `${pending.name}-vol-${volumeId.slice(0, 8)}`,
                     pending.volumeSize,
                     pending.location,
-                    serverId
+                    serverId,
+                    serverRef
                 )
 
                 await db.insert(volumes).values({
@@ -169,7 +174,10 @@ const provisionClaw = async (
                     clawId: id,
                     name: `${pending.name}-storage`,
                     size: pending.volumeSize,
-                    providerVolumeId: providerVolume.id,
+                    providerVolumeId: providerVolume.ref
+                        ? null
+                        : providerVolume.id,
+                    providerVolumeRef: providerVolume.ref ?? null,
                     location: pending.location,
                     status: 'available'
                 })

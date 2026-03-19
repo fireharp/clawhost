@@ -76,6 +76,18 @@ const deleteSSHKey = async (c: AuthenticatedContext) => {
                     )
             )
         }
+        if (key[0].gcpKeyId) {
+            providerDeletions.push(
+                getProvider('gcp')
+                    .deleteSSHKey(key[0].gcpKeyId)
+                    .catch((err) =>
+                        console.error(
+                            'Failed to delete SSH key from GCP:',
+                            err
+                        )
+                    )
+            )
+        }
         await Promise.all([
             ...providerDeletions,
             db.delete(sshKeys).where(eq(sshKeys.id, id))

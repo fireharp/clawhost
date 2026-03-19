@@ -6,8 +6,12 @@ dist
 *.tsbuildinfo
 .DS_Store
 *-firebase-adminsdk-*.json
+fh-claw-a69ff143c4fe.json
 **/.env
 **/.env.*
+deploy/cloud-run/api-env.yaml
+deploy/cloud-run/.env.web.build
+**/.cloudsql-root-password
 **/tsconfig.tsbuildinfo
 .expo
 android
@@ -19,6 +23,7 @@ resources
 # SECURITY: Never commit maintenance files or sensitive data to public repo
 # Keep these in workspace ONLY
 *.sh
+!deploy/**/*.sh
 *.pem
 .pem
 github-app.*
@@ -32,4 +37,4 @@ get-next-article.js
 clawhost-articles.json
 
 # Piper TTS models (large binary files, deployed separately)
-apps/api/models/
+apps/api/models/__pycache__/

@@ -9,7 +9,7 @@ import type {
     LANGUAGES
 } from '@/lib/constants'
 
-export type ProviderType = 'hetzner' | 'digitalocean' | 'vultr' | 'local'
+export type ProviderType = 'hetzner' | 'digitalocean' | 'vultr' | 'gcp' | 'local'
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info'
 

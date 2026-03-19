@@ -519,7 +519,7 @@ pnpm install                           # Install all dependencies
 pnpm --filter api db:migrate           # Run database migrations
 ```
 
-To set up Polar payment products for a provider:
+To set up Polar payment products for a provider (Hetzner, DigitalOcean, Vultr only; GCP uses built-in list prices in the API and is not sold via Polar):
 
 ```bash
 pnpm --filter api exec tsx scripts/create-polar-products.ts hetzner
@@ -550,6 +550,10 @@ pnpm lint         # ESLint check
 pnpm format       # Prettier + ESLint auto-fix
 ```
 
+### Cloud deploy (GCP Cloud Run)
+
+See `deploy/cloud-run/README.md` and `./deploy/cloud-run/deploy.sh` for two `*.run.app` services (API + static web), Cloud SQL socket `DATABASE_URL`, and Firebase authorized domains.
+
 ### Ports
 
 - Web: 1111 (proxies /api to 2222)
@@ -564,6 +568,11 @@ PORT=2222
 CLIENT=localhost:1111
 
 DATABASE_URL=postgresql://...
+DATABASE_DRIVER=pg
+
+Use `DATABASE_DRIVER=pg` for local Postgres (`localhost` / `127.0.0.1` is auto-detected without it). Leave unset for Neon HTTP. `drizzle-kit migrate` loads `apps/api/.env` via `dotenv` in `drizzle.config.ts`. The `pg` dependency makes `drizzle-kit migrate` use the node driver instead of `@neondatabase/serverless`.
+
+**Cloud SQL (GCP) public IP:** set `DATABASE_SSL_REJECT_UNAUTHORIZED=0` so `pg` accepts Google’s server cert without a downloaded CA (see `drizzle.config.ts` object-style `dbCredentials` and `src/db/index.ts` Pool `ssl`). For production, prefer Cloud SQL Auth Proxy or install the instance server CA and use verified TLS instead of `0`. Authorized networks must include your client public IP (`gcloud sql instances patch INSTANCE --authorized-networks=IP/32 --project=...`).
 
 # Firebase Admin SDK
 FIREBASE_PROJECT_ID=...
@@ -574,6 +583,10 @@ FIREBASE_CLIENT_EMAIL=...
 HETZNER_API_TOKEN=...
 DIGITALOCEAN_API_TOKEN=...
 VULTR_API_TOKEN=...
+
+# Google Cloud (Compute Engine)
+GCP_PROJECT_ID=...
+GOOGLE_APPLICATION_CREDENTIALS=./path-to-service-account.json
 
 # Cloudflare DNS
 CLOUDFLARE_API_TOKEN=...

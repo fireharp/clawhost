@@ -32,14 +32,15 @@ const createClaw = async (c: AuthenticatedContext) => {
             volumeSize
         } = await c.req.json<CreateClawBody>()
 
-        if (!name || !planId || !location) {
+        if (!planId || !location) {
             return fail(c, t('api.missingRequiredFields'), 400)
         }
 
         const validProviders = [
             clawProvider.hetzner,
             clawProvider.digitalocean,
-            clawProvider.vultr
+            clawProvider.vultr,
+            clawProvider.gcp
         ]
         if (providerName && !validProviders.includes(providerName)) {
             return fail(c, t('api.invalidProvider'), 400)
@@ -114,17 +115,23 @@ const createClaw = async (c: AuthenticatedContext) => {
         }
 
         const id = crypto.randomUUID()
+        const resolvedName =
+            typeof name === 'string' && name.trim().length > 0
+                ? name.trim()
+                : `claw-${id.slice(0, 8)}`
         const subdomain = generateSlug(id)
         const finalPassword = password || generatePassword()
 
         let providerSshKeyIds: number[] | undefined
         if (sshKeyResult && sshKeyResult[0]) {
             const keyId =
-                providerName === 'digitalocean'
+                resolvedProvider === clawProvider.digitalocean
                     ? sshKeyResult[0].digitaloceanKeyId
-                    : providerName === 'vultr'
+                    : resolvedProvider === clawProvider.vultr
                       ? sshKeyResult[0].vultrKeyId
-                      : sshKeyResult[0].providerKeyId
+                      : resolvedProvider === clawProvider.gcp
+                        ? sshKeyResult[0].gcpKeyId
+                        : sshKeyResult[0].providerKeyId
             if (keyId) {
                 providerSshKeyIds = [keyId]
             }
@@ -138,8 +145,8 @@ const createClaw = async (c: AuthenticatedContext) => {
             gatewayToken
         )
 
-        const { serverId, ip } = await provider.createServer(
-            generateServerName(name, id),
+        const serverResult = await provider.createServer(
+            generateServerName(resolvedName, id),
             planId,
             location,
             finalPassword,
@@ -147,6 +154,7 @@ const createClaw = async (c: AuthenticatedContext) => {
             '',
             cloudInitScript
         )
+        const { serverId, ip, providerServerId: serverRef } = serverResult
 
         await Promise.all([
             cloudflare
@@ -157,9 +165,9 @@ const createClaw = async (c: AuthenticatedContext) => {
             db.insert(claws).values({
                 id,
                 userId,
-                name,
+                name: resolvedName,
                 provider: resolvedProvider,
-                providerServerId: serverId.toString(),
+                providerServerId: serverRef ?? serverId.toString(),
                 status: clawStatus.configuring,
                 ip,
                 planId,
@@ -176,19 +184,23 @@ const createClaw = async (c: AuthenticatedContext) => {
             try {
                 const volumeId = crypto.randomUUID()
                 const providerVolume = await provider.createVolume(
-                    `${name}-vol-${volumeId.slice(0, 8)}`,
+                    `${resolvedName}-vol-${volumeId.slice(0, 8)}`,
                     volumeSize,
                     location,
-                    serverId
+                    serverId,
+                    serverRef
                 )
 
                 await db.insert(volumes).values({
                     id: volumeId,
                     userId,
                     clawId: id,
-                    name: `${name}-storage`,
+                    name: `${resolvedName}-storage`,
                     size: volumeSize,
-                    providerVolumeId: providerVolume.id,
+                    providerVolumeId: providerVolume.ref
+                        ? null
+                        : providerVolume.id,
+                    providerVolumeRef: providerVolume.ref ?? null,
                     location,
                     status: 'available'
                 })
@@ -196,7 +208,7 @@ const createClaw = async (c: AuthenticatedContext) => {
                 createdVolume = {
                     id: volumeId,
                     size: volumeSize,
-                    name: `${name}-storage`
+                    name: `${resolvedName}-storage`
                 }
             } catch (volumeErr) {
                 console.error('Failed to create volume:', volumeErr)
@@ -207,7 +219,7 @@ const createClaw = async (c: AuthenticatedContext) => {
             c,
             {
                 id,
-                name,
+                name: resolvedName,
                 provider: resolvedProvider,
                 status: clawStatus.configuring,
                 ip,

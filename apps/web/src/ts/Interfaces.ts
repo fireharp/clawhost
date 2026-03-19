@@ -468,7 +468,7 @@ export interface AIModelOption {
 }
 
 export interface CreateClawData {
-    name: string
+    name?: string
     provider: ProviderType
     planId: string
     location: string

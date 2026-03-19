@@ -76,25 +76,34 @@ const es: Translations = {
         heroTitle2: 'Localmente. Al instante.',
         badge: 'Próximamente',
         comingSoon: 'Próximamente',
-        description: 'Un cliente de escritorio ligero para gestionar tus instancias de OpenClaw. Despliega, monitorea y controla tus claws — directamente desde tu máquina.',
+        description:
+            'Un cliente de escritorio ligero para gestionar tus instancias de OpenClaw. Despliega, monitorea y controla tus claws — directamente desde tu máquina.',
         download: 'Descargar para {{os}}',
         downloadWindows: 'Windows',
         downloadMac: 'macOS',
         selfHostInstead: 'Auto-alojar en su lugar',
         features: 'Características',
         whyClawHostGo: 'Todas las funciones',
-        featuresDescription: 'Por qué vale la pena probarnos, las características no mienten.',
-        zeroConfigDescription: 'Instala y ejecuta. Sin configuración de servidor ni nube. OpenClaw está listo en segundos.',
-        ownedDataDescription: 'Todo se ejecuta en tu dispositivo. Sin servidores en la nube, sin terceros, sin datos saliendo de tu máquina.',
-        terminalAccessDescription: 'Accede al terminal de tu instancia OpenClaw directamente desde la aplicación. Sin clientes SSH externos.',
+        featuresDescription:
+            'Por qué vale la pena probarnos, las características no mienten.',
+        zeroConfigDescription:
+            'Instala y ejecuta. Sin configuración de servidor ni nube. OpenClaw está listo en segundos.',
+        ownedDataDescription:
+            'Todo se ejecuta en tu dispositivo. Sin servidores en la nube, sin terceros, sin datos saliendo de tu máquina.',
+        terminalAccessDescription:
+            'Accede al terminal de tu instancia OpenClaw directamente desde la aplicación. Sin clientes SSH externos.',
         simplePricing: 'Precios simples',
-        simplePricingDescription: 'Una licencia, todo ilimitado. Sin facturas mensuales, sin límites de uso, sin cargos ocultos.',
+        simplePricingDescription:
+            'Una licencia, todo ilimitado. Sin facturas mensuales, sin límites de uso, sin cargos ocultos.',
         localDomain: 'Dominio local personalizado',
-        localDomainDescription: 'Accede a tu OpenClaw a través de un dominio local personalizado. URLs limpias en tu propia red.',
-        secureDescription: 'Tus datos nunca salen de tu dispositivo. Completamente aislado, completamente cifrado, completamente tuyo.',
+        localDomainDescription:
+            'Accede a tu OpenClaw a través de un dominio local personalizado. URLs limpias en tu propia red.',
+        secureDescription:
+            'Tus datos nunca salen de tu dispositivo. Completamente aislado, completamente cifrado, completamente tuyo.',
         pricing: 'Precios',
         pricingTitle: 'Precio único y simple',
-        pricingDescription: 'Sin suscripciones, sin tarifas ocultas. Una licencia, uso ilimitado.',
+        pricingDescription:
+            'Sin suscripciones, sin tarifas ocultas. Una licencia, uso ilimitado.',
         pricingPrice: '${{price}}',
         pricingLabel: 'Pago único',
         pricingFeature1: 'Licencia de por vida',
@@ -106,7 +115,8 @@ const es: Translations = {
         pricingCta: 'Obtener ClawHost Go',
         comparison: 'Comparación',
         comparisonTitle: 'Go vs Cloud',
-        comparisonDescription: 'Elige lo que te funcione. Go se ejecuta localmente, Cloud en servidores dedicados.',
+        comparisonDescription:
+            'Elige lo que te funcione. Go se ejecuta localmente, Cloud en servidores dedicados.',
         comparisonLocalUs: 'Se ejecuta completamente en tu dispositivo',
         comparisonLocalOthers: 'Se ejecuta en servidores remotos',
         comparisonPricingUs: 'Pago único',
@@ -123,17 +133,23 @@ const es: Translations = {
         faqHeading: 'Preguntas frecuentes',
         faqDescription: 'Todo lo que necesitas saber sobre ClawHost Go.',
         faq1Question: '¿Qué es ClawHost Go?',
-        faq1Answer: 'ClawHost Go es una aplicación de escritorio ligera que te permite ejecutar OpenClaw localmente en tu máquina. Sin servidores en la nube — instala, ejecuta y comienza a usar OpenClaw en segundos.',
+        faq1Answer:
+            'ClawHost Go es una aplicación de escritorio ligera que te permite ejecutar OpenClaw localmente en tu máquina. Sin servidores en la nube — instala, ejecuta y comienza a usar OpenClaw en segundos.',
         faq2Question: '¿En qué se diferencia Go de ClawHost Cloud?',
-        faq2Answer: 'ClawHost Cloud despliega OpenClaw en servidores remotos dedicados con disponibilidad 24/7 y acceso global. ClawHost Go ejecuta todo localmente en tu dispositivo — ideal para privacidad, uso sin conexión y configuraciones simples.',
+        faq2Answer:
+            'ClawHost Cloud despliega OpenClaw en servidores remotos dedicados con disponibilidad 24/7 y acceso global. ClawHost Go ejecuta todo localmente en tu dispositivo — ideal para privacidad, uso sin conexión y configuraciones simples.',
         faq3Question: '¿Necesito conexión a internet?',
-        faq3Answer: 'ClawHost Go funciona sin conexión para uso local. Solo se necesita conexión a internet para la configuración inicial, actualizaciones y funciones que requieran llamadas API externas.',
+        faq3Answer:
+            'ClawHost Go funciona sin conexión para uso local. Solo se necesita conexión a internet para la configuración inicial, actualizaciones y funciones que requieran llamadas API externas.',
         faq4Question: '¿La licencia es un pago único?',
-        faq4Answer: 'Sí. Pagas una vez y obtienes acceso de por vida a ClawHost Go, incluyendo todas las actualizaciones futuras. Sin suscripciones, sin cargos recurrentes.',
+        faq4Answer:
+            'Sí. Pagas una vez y obtienes acceso de por vida a ClawHost Go, incluyendo todas las actualizaciones futuras. Sin suscripciones, sin cargos recurrentes.',
         faq5Question: '¿Qué sistemas operativos son compatibles?',
-        faq5Answer: 'ClawHost Go es compatible con Windows y macOS. Ambas plataformas tienen las mismas funciones y reciben actualizaciones simultáneamente.',
+        faq5Answer:
+            'ClawHost Go es compatible con Windows y macOS. Ambas plataformas tienen las mismas funciones y reciben actualizaciones simultáneamente.',
         faq6Question: '¿Puedo cambiar de Go a Cloud después?',
-        faq6Answer: 'Por supuesto. Puedes exportar tu configuración de OpenClaw desde Go y desplegarla en ClawHost Cloud en cualquier momento. Ambas plataformas son completamente compatibles.',
+        faq6Answer:
+            'Por supuesto. Puedes exportar tu configuración de OpenClaw desde Go y desplegarla en ClawHost Cloud en cualquier momento. Ambas plataformas son completamente compatibles.',
         statsPrice: '${{price}}',
         statsLifetime: 'De por vida',
         statsOneTime: 'Único',
@@ -143,7 +159,8 @@ const es: Translations = {
         statsZero: 'Cero',
         statsZeroConfig: 'Cero configuración',
         ctaTitle: 'Ejecuta OpenClaw localmente',
-        ctaDescription: 'Pago único, licencia de por vida. Despliega OpenClaw en tu propia máquina — sin cloud, sin suscripciones, sin límites. Tus datos, tus reglas.',
+        ctaDescription:
+            'Pago único, licencia de por vida. Despliega OpenClaw en tu propia máquina — sin cloud, sin suscripciones, sin límites. Tus datos, tus reglas.',
         joinWaitlist: 'Unirse a la lista de espera',
         joinedWaitlist: 'En la lista de espera',
         waitlistJoinedToast: 'Te has unido a la lista de espera.',
@@ -265,7 +282,8 @@ const es: Translations = {
         planBelowMinimumMemory:
             'Este plan no cumple con el requisito mínimo de memoria!',
         invalidLocation: 'Ubicación seleccionada no válida!',
-        planNotAvailableAtLocation: 'Este plan no está disponible en la ubicación seleccionada!',
+        planNotAvailableAtLocation:
+            'Este plan no está disponible en la ubicación seleccionada!',
         failedToSyncClaw: 'Error al sincronizar el estado del servidor!',
         failedToProvisionClaw: 'Error al aprovisionar el claw!',
         failedToInitiatePurchase: 'Error al iniciar la compra!',
@@ -458,9 +476,11 @@ const es: Translations = {
         waitlistJoined: 'Te has unido a la lista de espera.',
         waitlistAlreadyJoined: 'Ya estás en la lista de espera.',
         waitlistJoinFailed: '¡Error al unirse a la lista de espera!',
-        waitlistRateLimited: '¡Vas demasiado rápido! Por favor, inténtalo de nuevo en {{seconds}} segundos.',
+        waitlistRateLimited:
+            '¡Vas demasiado rápido! Por favor, inténtalo de nuevo en {{seconds}} segundos.',
         waitlistStatusFetched: 'Estado de la lista de espera obtenido.',
-        waitlistCheckFailed: '¡Error al verificar el estado de la lista de espera!'
+        waitlistCheckFailed:
+            '¡Error al verificar el estado de la lista de espera!'
     },
     emails: {
         otpSubject: 'Tu código de inicio de sesión de ClawHost',
@@ -489,7 +509,8 @@ const es: Translations = {
             },
             logs: {
                 subject: '¿Lo sabías? Logs en tiempo real en tu panel',
-                preview: 'Monitoriza los logs de tu servidor sin salir del navegador',
+                preview:
+                    'Monitoriza los logs de tu servidor sin salir del navegador',
                 heading: 'Ve lo que hace tu servidor',
                 description:
                     'Monitoriza los logs de tu servidor en tiempo real desde el panel de ClawHost. Diagnostica problemas, rastrea despliegues y depura tus aplicaciones sin salir del navegador.',
@@ -504,7 +525,8 @@ const es: Translations = {
                 cta: 'Configurar canales'
             },
             fileExplorer: {
-                subject: '¿Lo sabías? Edita archivos del servidor desde el navegador',
+                subject:
+                    '¿Lo sabías? Edita archivos del servidor desde el navegador',
                 preview: 'Explora, lee y edita archivos sin SSH',
                 heading: 'Tus archivos, al alcance',
                 description:
@@ -601,7 +623,8 @@ const es: Translations = {
             },
             subdomain: {
                 subject: '¿Lo sabías? Cada claw tiene su propio subdominio',
-                preview: 'Accede a tu claw desde cualquier lugar con una URL propia',
+                preview:
+                    'Accede a tu claw desde cualquier lugar con una URL propia',
                 heading: 'Accede desde cualquier lugar',
                 description:
                     'Cada claw recibe un subdominio único para acceder a tu instancia OpenClaw desde cualquier lugar. Sin redirección de puertos, sin redes locales — solo una URL.',
@@ -617,7 +640,8 @@ const es: Translations = {
             },
             reinstall: {
                 subject: '¿Lo sabías? Reinstala OpenClaw con un clic',
-                preview: 'Reinicia tu instancia OpenClaw sin perder tu servidor',
+                preview:
+                    'Reinicia tu instancia OpenClaw sin perder tu servidor',
                 heading: 'Nuevo comienzo, mismo servidor',
                 description:
                     'Reinstala el runtime de OpenClaw en tu servidor existente con un solo clic. Tu servidor permanece intacto — solo OpenClaw recibe una instalación limpia.',
@@ -765,7 +789,8 @@ const es: Translations = {
         title: 'Licencia',
         description: 'Administra tu licencia de OpenClaw.',
         pageTitle: 'Licencia',
-        pageDescription: 'Compra tu licencia para auto-alojar instancias de OpenClaw localmente con nuestra aplicación Go.',
+        pageDescription:
+            'Compra tu licencia para auto-alojar instancias de OpenClaw localmente con nuestra aplicación Go.',
         planName: 'Licencia ClawHost Go',
         oneTimePurchase: 'Compra única',
         price: '${{price}}',
@@ -783,9 +808,11 @@ const es: Translations = {
         featureSupport: 'Soporte prioritario',
         featureCloud: 'Todas las funciones en la nube, localmente',
         whatsIncluded: 'Qué incluye',
-        permanentNote: 'Las licencias son permanentes e irrevocables. Una vez comprada, es tuya para siempre.',
+        permanentNote:
+            'Las licencias son permanentes e irrevocables. Una vez comprada, es tuya para siempre.',
         gateTitle: 'Licencia requerida',
-        gateDescription: 'Necesitas una licencia ClawHost Go para desplegar y gestionar instancias de OpenClaw localmente.'
+        gateDescription:
+            'Necesitas una licencia ClawHost Go para desplegar y gestionar instancias de OpenClaw localmente.'
     },
     dashboard: {
         title: 'Claws',
@@ -975,6 +1002,8 @@ const es: Translations = {
         providerHetzner: 'Hetzner',
         providerDigitalOcean: 'DigitalOcean',
         providerVultr: 'Vultr',
+        providerGcp: 'Google Cloud',
+        tierGcpCompute: 'Compute E2',
         providerLocal: 'Local',
         providerAws: 'AWS',
         comingSoon: 'Pronto',
@@ -991,10 +1020,8 @@ const es: Translations = {
         advancedOptions: 'Opciones avanzadas opcionales',
         rootPassword: 'Contraseña root',
         rootPasswordPlaceholder: 'Ingresa una contraseña o genera una',
-        autoGenerateGatewayTokenHint:
-            'Opcional. Sin token si se deja vacío.',
-        autoGeneratePasswordHint:
-            'Opcional. Sin contraseña si se deja vacío.',
+        autoGenerateGatewayTokenHint: 'Opcional. Sin token si se deja vacío.',
+        autoGeneratePasswordHint: 'Opcional. Sin contraseña si se deja vacío.',
         regeneratePassword: 'Regenerar contraseña',
         sshKeyOptional: 'Clave SSH',
         noSshKeyPasswordOnly: 'Sin clave SSH (solo contraseña)',
@@ -1015,6 +1042,7 @@ const es: Translations = {
         totalYearly: 'Total anual',
         creating: 'Creando...',
         proceedToPayment: 'Pagar ${{amount}} para desplegar',
+        deployWithoutCheckout: 'Desplegar ahora.',
         agreementNotice: 'Al desplegar, aceptas nuestros',
         selectServerToContinue: 'Selecciona un servidor para continuar',
         selectLocationToContinue: 'Selecciona una ubicación para continuar',
@@ -1349,7 +1377,8 @@ const es: Translations = {
         release12Title: 'Planes anuales, modo de voz y más',
         release12Description:
             'Suscripciones anuales con 2 meses gratis, modo de voz, reinstalación de instancia y una página de presentación inicial para ClawHost Go.',
-        release12Feature1: 'Página de presentación de ClawHost Go, alojamiento local con ClawHost',
+        release12Feature1:
+            'Página de presentación de ClawHost Go, alojamiento local con ClawHost',
         release12Feature2:
             'Soporte de suscripción anual con 2 meses gratis al suscribirte anualmente',
         release12Feature3:
@@ -1660,12 +1689,14 @@ const es: Translations = {
             '¿Puedes ejecutar la suite de pruebas y verificar si hay fallos?',
         chatReadOnlyAssistant2:
             '¡Claro! Ejecutaré todas las pruebas ahora. 3 pasaron, 0 fallaron. Todo se ve bien — todas las aserciones pasan.',
-        chatReadOnlyGoUser: 'Oye, ¿puedes ayudarme a automatizar mi pipeline de despliegue?',
+        chatReadOnlyGoUser:
+            'Oye, ¿puedes ayudarme a automatizar mi pipeline de despliegue?',
         chatReadOnlyGoAssistant:
             '¡Por supuesto! Puedo configurar un pipeline CI/CD para ti. ¿Quieres que empiece con un workflow de GitHub Actions que compile, pruebe y despliegue automáticamente?',
         chatReadOnlyGoReply:
             '¡Esto es una vista previa! Obtén ClawHost Go y ejecuta OpenClaw localmente — tu máquina, tus datos, sin necesidad de cloud.',
-        chatReadOnlyGoUser2: '¿Puedes monitorear mis servicios locales y alertarme si algo se cae?',
+        chatReadOnlyGoUser2:
+            '¿Puedes monitorear mis servicios locales y alertarme si algo se cae?',
         chatReadOnlyGoAssistant2:
             '¡En ello! Configuraré chequeos de salud para todos tus servicios. Monitoreando 4 endpoints actualmente — todos saludables y respondiendo.',
         chatConnectionFailed: 'Error al conectar con este agente!',
@@ -2089,7 +2120,7 @@ const es: Translations = {
         sharedContainers: 'Contenedores compartidos',
         isolatedContainers: 'Contenedores aislados',
         cloudWorkspaces: 'Espacios de trabajo en la nube',
-        threeProviders: 'Hetzner, DigitalOcean, Vultr',
+        threeProviders: 'Hetzner, DigitalOcean, Vultr, Google Cloud',
         singleProvider: 'Proveedor único',
         fullyDedicated: 'Totalmente dedicado',
         shared: 'Compartido',
